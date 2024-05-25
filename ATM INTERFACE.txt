@@ -1,0 +1,104 @@
+```java
+import java.util.Scanner;
+
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double balance) {
+        this.balance = balance;
+    }
+
+    public boolean deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public double checkBalance() {
+        return balance;
+    }
+}
+
+class ATM {
+    private BankAccount userAccount;
+
+    public ATM(BankAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public boolean withdraw(double amount) {
+        if (amount > 0 && amount <= userAccount.checkBalance()) {
+            return userAccount.withdraw(amount);
+        }
+        return false;
+    }
+
+    public boolean deposit(double amount) {
+        if (amount > 0) {
+            return userAccount.deposit(amount);
+        }
+        return false;
+    }
+
+    public double checkBalance() {
+        return userAccount.checkBalance();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        BankAccount userAccount = new BankAccount(1000); // Starting balance of $1000
+        ATM atm = new ATM(userAccount);
+
+        while (true) {
+            System.out.println("\n1. Withdraw");
+            System.out.println("2. Deposit");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter amount to withdraw: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    if (atm.withdraw(withdrawAmount)) {
+                        System.out.println("Withdrawal successful. Remaining balance: " + atm.checkBalance());
+                    } else {
+                        System.out.println("Withdrawal failed. Insufficient balance or invalid amount.");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Enter amount to deposit: ");
+                    double depositAmount = scanner.nextDouble();
+                    if (atm.deposit(depositAmount)) {
+                        System.out.println("Deposit successful. Current balance: " + atm.checkBalance());
+                    } else {
+                        System.out.println("Deposit failed. Invalid amount.");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Current balance: " + atm.checkBalance());
+                    break;
+                case 4:
+                    System.out.println("Thank you for using our ATM. Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
+```
