@@ -1,4 +1,3 @@
-```java
 import java.util.Scanner;
 
 class BankAccount {
@@ -101,4 +100,3 @@ public class Main {
         }
     }
 }
-```
